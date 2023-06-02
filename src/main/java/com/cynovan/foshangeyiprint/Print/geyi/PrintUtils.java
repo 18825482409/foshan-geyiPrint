@@ -201,7 +201,7 @@ public class PrintUtils implements Printable {
             int widthx = (paperWidth - strWidth)/2;
             g2d.drawString(foot, widthx, 81);
             g2d.setFont(new Font("Default", Font.PLAIN, 10));
-            g2d.drawString(footAmount,widthx,102);
+            g2d.drawString(footAmount,18,102);
         }else if(type == 2){
             writeQrCodeContent(g2d,QRContent,isDouble);
         }
