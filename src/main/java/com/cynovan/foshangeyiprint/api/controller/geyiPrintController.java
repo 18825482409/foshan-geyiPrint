@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -30,14 +31,14 @@ public class geyiPrintController {
     }
 
     @RequestMapping("/geyiPrint")
-    public Result print(@RequestBody Map<String,String> map){
-        String name = map.get("name");
-        String orderNo = map.get("orderNo");
-        String date = map.get("date");
-        String footContent = map.get("footContent");
-        String footAmount = map.get("footAmount");
+    public Result print(@RequestBody Map<String,Object> map){
+        String name =(String) map.get("name");
+        String orderNo = (String)map.get("orderNo");
+        String date = (String)map.get("date");
+        String footContent = (String)map.get("footContent");
+        ArrayList<String> footAmount = (ArrayList<String>)map.get("footAmount");
         logger.info("打印请求"+map);
-        return service.OrderPrint(name, orderNo, date, footContent, footAmount);
+        return service.OrderPrint(name, orderNo, date, footContent, footAmount.toArray(new String[0]));
     }
 
 }

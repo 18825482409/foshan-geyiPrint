@@ -45,10 +45,10 @@ public class PrintUtils implements Printable {
     /**
      * 页脚 【A: 5袋 1000ml】
      */
-    private String footAmount;
+    private String[] footAmount;
     /**
-    * 二维码内容
-    * */
+     * 二维码内容
+     * */
     private String QRContent;
     /**
      *是否两张二维码
@@ -103,14 +103,14 @@ public class PrintUtils implements Printable {
     }
 
 
-    public Result toPrintOrder(String hospitalName, String orderNo,String time,String footContent,String footAmount){
+    public Result toPrintOrder(String hospitalName, String orderNo,String time,String footContent,String[] footAmount){
         if (schema == 0){
             SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日");
-            return orderPrint("第三人民医院", System.currentTimeMillis()+"",   df.format(new Date()), "共20筐，第2筐","A: 5袋 1000ml");
+            return orderPrint("第三人民医院", System.currentTimeMillis()+"",   df.format(new Date()), "共20筐，第2筐",new String[]{"A: 5袋 1000ml"});
         }else{
             return orderPrint(hospitalName, orderNo,time, footContent,footAmount);
         }
-     }
+    }
 
 
     /**
@@ -121,7 +121,7 @@ public class PrintUtils implements Printable {
      * @param footContent 页脚内容
      * @return
      */
-    private Result orderPrint(String hospitalName, String orderNo,String time,String footContent,String footAmount){
+    private Result orderPrint(String hospitalName, String orderNo,String time,String footContent,String[] footAmount){
         this.hospitalName = hospitalName;
         this.orderNo = orderNo;
         this.time = time;
@@ -184,14 +184,14 @@ public class PrintUtils implements Printable {
 
             g2d.setFont(new Font("Default", Font.BOLD, 12));
 
-            g2d.drawString( hospitalName, 18+titleWidth, 11);
+            g2d.drawString( hospitalName, 18+titleWidth, 10);
 
             g2d.setFont(new Font("Default", Font.PLAIN, 10));
-            g2d.drawString("医院名称：  ", 18, 11);
-            g2d.drawString("订单号：" , 18, 35);
-            g2d.drawString( orderNo, 18+titleWidth, 35);
-            g2d.drawString("出库日期：", 18, 58);
-            g2d.drawString( time, 18+titleWidth, 58);
+            g2d.drawString("医院名称：  ", 18, 10);
+            g2d.drawString("订单号：" , 18, 30);
+            g2d.drawString( orderNo, 18+titleWidth, 30);
+//            g2d.drawString("出库日期：", 18, 58);
+//            g2d.drawString( time, 18+titleWidth, 58);
 
             Font footFont = new Font("Default", Font.BOLD, 12);
             g2d.setFont(footFont);
@@ -199,9 +199,18 @@ public class PrintUtils implements Printable {
             String foot = footContent;
             int strWidth = fm.stringWidth(foot);
             int widthx = (paperWidth - strWidth)/2;
-            g2d.drawString(foot, widthx, 81);
+            g2d.drawString(foot, widthx, 50);
             g2d.setFont(new Font("Default", Font.PLAIN, 10));
-            g2d.drawString(footAmount,18,102);
+
+            int typeNum = footAmount.length;
+            if (typeNum > 4) {
+                typeNum = 4;
+            }
+            int interval_y = (int)Math.ceil(60/(double)(typeNum  + 1));
+            for (int i = 0;i< typeNum;i++){
+                g2d.drawString(footAmount[i],18,50 + (i+1)*interval_y);
+            }
+
         }else if(type == 2){
             writeQrCodeContent(g2d,QRContent,isDouble);
         }

@@ -18,7 +18,7 @@ public class GeyiPrintService {
      * 页脚 【共10筐，第几筐】
      * 页脚 【A: 5袋 1000ml】
      */
-    public Result OrderPrint(String name, String orderNo, String date, String footContent, String footAmount){
+    public Result OrderPrint(String name, String orderNo, String date, String footContent, String[] footAmount){
         PrintUtils printUtils = new PrintUtils("Win32 Printer : TC35Label Printer");
         return printUtils.toPrintOrder(name,orderNo,date,footContent,footAmount);
     }
